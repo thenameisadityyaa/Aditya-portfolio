@@ -64,31 +64,41 @@ export default function ProjectsSection() {
           <button
             key={p.id}
             onClick={() => setOpen(p)}
-            className="work-reveal text-left rounded-3xl bg-white/5 neon-border p-6 hover:bg-white/10 transition"
+            className="work-reveal text-left rounded-3xl bg-white/5 neon-border p-5 hover:bg-white/10 transition"
           >
-            <div className="flex items-center justify-between gap-3">
-              <span className="text-xs tracking-widest uppercase text-(--accent)">
-                {p.category}
-              </span>
-              <span className="text-xs text-white/60">{p.status}</span>
-            </div>
+            {/* ✅ Image */}
+            <img
+              src={p.image}
+              alt={p.title}
+              loading="lazy"
+              className="h-40 w-full object-cover rounded-2xl neon-border"
+            />
 
-            <h3 className="mt-3 text-lg font-semibold">{p.title}</h3>
-            <p className="mt-1 text-white/70 text-sm">{p.subtitle}</p>
-
-            <p className="mt-4 text-(--muted) text-sm leading-relaxed line-clamp-3">
-              {p.description}
-            </p>
-
-            <div className="mt-4 flex flex-wrap gap-2">
-              {p.tags.slice(0, 3).map((t) => (
-                <span
-                  key={t}
-                  className="text-xs px-3 py-1 rounded-full bg-white/5 neon-border text-white/80"
-                >
-                  {t}
+            <div className="mt-4">
+              <div className="flex items-center justify-between gap-3">
+                <span className="text-xs tracking-widest uppercase text-(--accent)">
+                  {p.category}
                 </span>
-              ))}
+                <span className="text-xs text-white/60">{p.status}</span>
+              </div>
+
+              <h3 className="mt-3 text-lg font-semibold">{p.title}</h3>
+              <p className="mt-1 text-white/70 text-sm">{p.subtitle}</p>
+
+              <p className="mt-4 text-(--muted) text-sm leading-relaxed line-clamp-3">
+                {p.description}
+              </p>
+
+              <div className="mt-4 flex flex-wrap gap-2">
+                {p.tags.slice(0, 3).map((t) => (
+                  <span
+                    key={t}
+                    className="text-xs px-3 py-1 rounded-full bg-white/5 neon-border text-white/80"
+                  >
+                    {t}
+                  </span>
+                ))}
+              </div>
             </div>
           </button>
         ))}

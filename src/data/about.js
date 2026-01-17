@@ -18,6 +18,7 @@ export const timeline = [
 
 export const skills = [
   "React",
+  "DSA",
   "Tailwind CSS",
   "JavaScript",
   "GSAP Animations",

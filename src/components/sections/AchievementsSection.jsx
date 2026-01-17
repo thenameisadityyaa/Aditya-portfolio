@@ -17,10 +17,13 @@ export default function AchievementsSection() {
         {achievements.map((a) => (
           <ScrollReveal key={a.id} className="h-full">
             <div className="h-full rounded-3xl bg-white/5 neon-border overflow-hidden hover:bg-white/10 transition">
-              {/* image placeholder */}
-              <div className="h-[180px] bg-black/40 neon-border grid place-items-center">
-                <p className="text-(--muted) text-sm">Achievement Image</p>
-              </div>
+              {/* ✅ Image */}
+              <img
+                src={a.image}
+                alt={a.title}
+                className="h-[180px] w-full object-cover"
+                loading="lazy"
+              />
 
               <div className="p-6">
                 <div className="flex items-center justify-between gap-3">
@@ -50,8 +53,8 @@ export default function AchievementsSection() {
               <span className="text-white/60"> coming</span>.
             </h2>
             <p className="mt-3 text-(--muted) max-w-2xl">
-              I keep building and upgrading my portfolio. If you like premium UI, interactive UX,
-              and fast execution — I’m the right candidate.
+              I keep building and upgrading my portfolio. If you like premium UI,
+              interactive UX, and fast execution — I’m the right candidate.
             </p>
           </div>
         </div>

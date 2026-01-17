@@ -6,7 +6,7 @@ export default function ProjectModal({ project, onClose }) {
 
   return (
     <div
-      className="fixed inset-0 z-999 bg-black/70 backdrop-blur-sm grid place-items-center px-4"
+      className="fixed inset-0 z-9999 bg-black/70 backdrop-blur-sm grid place-items-center px-4"
       onClick={onClose}
     >
       <div
@@ -23,7 +23,15 @@ export default function ProjectModal({ project, onClose }) {
         </button>
 
         <div className="relative">
-          <p className="text-(--accent) text-xs tracking-widest uppercase">
+          {/* ✅ Image */}
+          <img
+            src={project.image}
+            alt={project.title}
+            loading="lazy"
+            className="w-full h-56 object-cover rounded-2xl neon-border"
+          />
+
+          <p className="mt-5 text-(--accent) text-xs tracking-widest uppercase">
             {project.category} • {project.status}
           </p>
 
@@ -52,6 +60,7 @@ export default function ProjectModal({ project, onClose }) {
             <NeonButton onClick={() => window.open(project.demo, "_blank")}>
               Live Demo <ExternalLink className="ml-2" size={16} />
             </NeonButton>
+
             <NeonButton
               variant="secondary"
               onClick={() => window.open(project.github, "_blank")}

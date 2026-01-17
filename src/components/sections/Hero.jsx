@@ -96,18 +96,22 @@ export default function Hero() {
               </h3>
 
               <p className="mt-4 text-(--muted) leading-relaxed">
-                Winner at Sharda University Technovation Hackathon • Graphic Designing Lead @ AIML Club.
+                Winner at Sharda University Technovation Hackathon • Graphic Designing Lead @AIML Club.
               </p>
 
               {/* Avatar placeholder */}
-              <div className="mt-7 h-[260px] w-full rounded-2xl bg-black/40 neon-border grid place-items-center">
-                <p className="text-(--muted) text-sm">
-                  Avatar / Illustration (we’ll add later)
-                </p>
+              <div className="mt-7 h-[260px] w-full rounded-2xl neon-border overflow-hidden bg-black relative">
+                <img
+                  src="/src/assets/Aditya sharma.jpg"
+                  alt="Aditya Sharma"
+                  className="h-full w-full object-cover"
+                  loading="lazy"
+                />
+                <div className="absolute inset-0 bg-linear-to-t from-black/70 via-black/10 to-transparent" />
               </div>
 
               <div className="mt-6 flex items-center justify-between text-sm">
-                <span className="text-(--muted)">Focused on UI + Performance</span>
+                <span className="text-(--muted)">Open to work!</span>
                 <span className="text-(--accent)">Available</span>
               </div>
             </div>
