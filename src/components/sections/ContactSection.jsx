@@ -1,11 +1,57 @@
+import { useState } from "react";
+import emailjs from "@emailjs/browser";
 import { Mail, Linkedin, Github, Instagram } from "lucide-react";
 import ScrollReveal from "../ui/ScrollReveal";
 import NeonButton from "../ui/NeonButton";
 
 export default function ContactSection() {
-  const onSubmit = (e) => {
+  const [loading, setLoading] = useState(false);
+
+  // ✅ IMPORTANT: keys must match EmailJS template variables
+  const [form, setForm] = useState({
+    from_name: "",
+    from_email: "",
+    message: "",
+  });
+
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+
+    // ✅ name must be from_name / from_email / message
+    setForm((prev) => ({ ...prev, [name]: value }));
+  };
+
+  const onSubmit = async (e) => {
     e.preventDefault();
-    alert("Message submitted ✅ (we’ll connect backend later if needed)");
+
+    try {
+      setLoading(true);
+
+      // ✅ EmailJS send
+      await emailjs.send(
+        import.meta.env.VITE_EMAILJS_SERVICE_ID,
+        import.meta.env.VITE_EMAILJS_TEMPLATE_ID,
+        {
+          from_name: form.from_name,
+          from_email: form.from_email,
+          message: form.message,
+        },
+        import.meta.env.VITE_EMAILJS_PUBLIC_KEY
+      );
+
+      alert("✅ Message sent successfully!");
+
+      setForm({
+        from_name: "",
+        from_email: "",
+        message: "",
+      });
+    } catch (error) {
+      console.error("EmailJS Error:", error);
+      alert("❌ Failed to send message. Check template variables & env keys.");
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
@@ -20,7 +66,7 @@ export default function ContactSection() {
       </ScrollReveal>
 
       <div className="grid gap-6 lg:grid-cols-2">
-        {/* Form */}
+        {/* ✅ FORM */}
         <ScrollReveal>
           <form
             onSubmit={onSubmit}
@@ -29,6 +75,9 @@ export default function ContactSection() {
             <Field label="Your name">
               <input
                 required
+                name="from_name" // ✅ must match template variable
+                value={form.from_name}
+                onChange={handleChange}
                 className="w-full rounded-2xl bg-black/40 neon-border px-4 py-3 outline-none"
                 placeholder="Your name"
               />
@@ -38,6 +87,9 @@ export default function ContactSection() {
               <input
                 required
                 type="email"
+                name="from_email" // ✅ must match template variable
+                value={form.from_email}
+                onChange={handleChange}
                 className="w-full rounded-2xl bg-black/40 neon-border px-4 py-3 outline-none"
                 placeholder="you@email.com"
               />
@@ -47,32 +99,36 @@ export default function ContactSection() {
               <textarea
                 required
                 rows={5}
+                name="message" // ✅ must match template variable
+                value={form.message}
+                onChange={handleChange}
                 className="w-full rounded-2xl bg-black/40 neon-border px-4 py-3 outline-none resize-none"
                 placeholder="Tell me what you want to build..."
               />
             </Field>
 
             <div className="pt-2 flex flex-wrap gap-3">
-              <NeonButton type="submit">
-                Send Message <Mail className="ml-2" size={16} />
+              <NeonButton type="submit" disabled={loading}>
+                {loading ? "Sending..." : "Send Message"}
+                <Mail className="ml-2" size={16} />
               </NeonButton>
 
               <NeonButton
                 variant="secondary"
                 type="button"
-                onClick={() => window.open("mailto:yourmail@gmail.com")}
+                onClick={() => window.open("mailto:work.adityyaa@gmail.com")}
               >
                 Email Directly
               </NeonButton>
             </div>
 
             <p className="text-xs text-white/40">
-              Note: This is frontend-only for now. We can add EmailJS / backend later.
+              This form uses EmailJS (no backend required).
             </p>
           </form>
         </ScrollReveal>
 
-        {/* Social */}
+        {/* ✅ SOCIAL */}
         <ScrollReveal>
           <div className="rounded-3xl bg-white/5 neon-border p-6 md:p-8 relative overflow-hidden">
             <div className="absolute -top-24 -right-24 size-72 rounded-full bg-(--accent)/10 blur-3xl" />
@@ -86,33 +142,37 @@ export default function ContactSection() {
               </h2>
 
               <p className="mt-3 text-(--muted) leading-relaxed">
-                I’m active on social platforms. For startups & internships, DM is fastest.
+                For startups & internships, DM is fastest.
               </p>
 
               <div className="mt-6 space-y-3">
                 <Social
                   icon={Linkedin}
                   label="LinkedIn"
-                  onClick={() => window.open("#", "_blank")}
+                  onClick={() =>
+                    window.open(
+                      "https://www.linkedin.com/in/sharma-adityaa",
+                      "_blank"
+                    )
+                  }
                 />
                 <Social
                   icon={Github}
                   label="GitHub"
-                  onClick={() => window.open("#", "_blank")}
+                  onClick={() =>
+                    window.open("https://github.com/thenameisadityyaa", "_blank")
+                  }
                 />
                 <Social
                   icon={Instagram}
                   label="Instagram"
-                  onClick={() => window.open("#", "_blank")}
+                  onClick={() =>
+                    window.open(
+                      "https://instagram.com/thenameisadityyaa",
+                      "_blank"
+                    )
+                  }
                 />
-              </div>
-
-              <div className="mt-8 rounded-2xl bg-black/40 neon-border p-5">
-                <p className="text-white/80 font-medium">Availability</p>
-                <p className="mt-2 text-(--muted) text-sm">
-                  Open to internships, collaborations & startup product roles.
-                </p>
-                <p className="mt-3 text-(--accent) text-sm">Status: Available ✅</p>
               </div>
             </div>
           </div>
