@@ -1,6 +1,3 @@
-import hackathonImg from "../assets/WhatsApp Image 2026-01-17 at 12.23.30 PM.jpeg";
-import leadImg from "../assets/Aditya sharma.jpg";
-
 export const achievements = [
   {
     id: "sharda-hackathon",
@@ -8,7 +5,7 @@ export const achievements = [
     org: "Sharda University",
     desc: "Won the Technovation hackathon by building a solution with strong execution and teamwork.",
     badge: "WIN",
-    image: hackathonImg,
+    image: "/technovation-hackathon.jpg", // ✅ public path
   },
   {
     id: "aiml-lead",
@@ -16,7 +13,7 @@ export const achievements = [
     org: "AIML Club — GIET University",
     desc: "Led visual design, creatives and brand assets for club events and promotions.",
     badge: "LEAD",
-    image: leadImg,
+    image: "/aditya-sharma.jpg", // ✅ public path
   },
   {
     id: "student",
