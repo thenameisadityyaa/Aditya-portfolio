@@ -1,4 +1,6 @@
 import { useEffect, useRef } from "react";
+import avatarImg from "/home/aditya/Documents/Frontend/aditya-portfolio/src/assets/Aditya sharma.jpg";
+
 import { useNavigate } from "react-router-dom";
 import gsap from "gsap";
 import {
@@ -128,11 +130,12 @@ export default function Hero() {
               {/* ✅ Image */}
               <div className="mt-7 h-[260px] w-full rounded-2xl neon-border overflow-hidden bg-black relative">
                 <img
-                  src="https://source.unsplash.com/900x900/?developer,portrait"
-                  alt="Aditya Sharma"
-                  className="h-full w-full object-cover"
-                  loading="lazy"
-                />
+  src={avatarImg}
+  alt="Aditya Sharma"
+  className="h-full w-full object-cover"
+  loading="lazy"
+/>
+
                 <div className="absolute inset-0 bg-linear-to-t from-black/70 via-black/10 to-transparent" />
               </div>
 
