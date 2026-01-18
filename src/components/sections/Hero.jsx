@@ -1,7 +1,13 @@
 import { useEffect, useRef } from "react";
 import { useNavigate } from "react-router-dom";
 import gsap from "gsap";
-import { ArrowRight, LayoutGrid, BriefcaseBusiness, CalendarCheck } from "lucide-react";
+import {
+  ArrowRight,
+  LayoutGrid,
+  BriefcaseBusiness,
+  CalendarCheck,
+  FileText,
+} from "lucide-react";
 import { FaReact, FaGithub, FaNodeJs } from "react-icons/fa";
 import { SiTailwindcss, SiJavascript, SiVite } from "react-icons/si";
 
@@ -33,9 +39,21 @@ export default function Hero() {
     <section ref={root} className="pt-8 md:pt-12">
       {/* Top Pills */}
       <div className="hero-reveal flex flex-wrap gap-3 justify-center md:justify-start">
-        <GlowPill icon={BriefcaseBusiness} label="See my work" onClick={() => navigate("/work")} />
-        <GlowPill icon={LayoutGrid} label="My catalog" onClick={() => navigate("/work")} />
-        <GlowPill icon={CalendarCheck} label="Book a service" onClick={() => navigate("/contact")} />
+        <GlowPill
+          icon={BriefcaseBusiness}
+          label="See my work"
+          onClick={() => navigate("/work")}
+        />
+        <GlowPill
+          icon={LayoutGrid}
+          label="My catalog"
+          onClick={() => navigate("/catalog")}
+        />
+        <GlowPill
+          icon={CalendarCheck}
+          label="Book a service"
+          onClick={() => navigate("/contact")}
+        />
       </div>
 
       {/* Main Hero */}
@@ -59,6 +77,14 @@ export default function Hero() {
             <NeonButton onClick={() => navigate("/work")}>
               View Projects <ArrowRight className="ml-2" size={18} />
             </NeonButton>
+
+            <NeonButton
+              variant="secondary"
+              onClick={() => window.open("/resume.pdf", "_blank")}
+            >
+              Resume <FileText className="ml-2" size={18} />
+            </NeonButton>
+
             <NeonButton variant="secondary" onClick={() => navigate("/contact")}>
               Hire / Collaborate
             </NeonButton>
@@ -96,13 +122,13 @@ export default function Hero() {
               </h3>
 
               <p className="mt-4 text-(--muted) leading-relaxed">
-                Winner at Sharda University Technovation Hackathon • Graphic Designing Lead @AIML Club.
+                Winner at Sharda University Technovation Hackathon • Graphic Designing Lead @ AIML Club.
               </p>
 
-              {/* Avatar placeholder */}
+              {/* ✅ Image */}
               <div className="mt-7 h-[260px] w-full rounded-2xl neon-border overflow-hidden bg-black relative">
                 <img
-                  src="/src/assets/Aditya sharma.jpg"
+                  src="https://source.unsplash.com/900x900/?developer,portrait"
                   alt="Aditya Sharma"
                   className="h-full w-full object-cover"
                   loading="lazy"

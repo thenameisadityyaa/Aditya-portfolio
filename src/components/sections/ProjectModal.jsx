@@ -1,15 +1,56 @@
+import { useEffect, useRef } from "react";
 import { X, ExternalLink, Github } from "lucide-react";
+import gsap from "gsap";
 import NeonButton from "../ui/NeonButton";
 
 export default function ProjectModal({ project, onClose }) {
+  const overlayRef = useRef(null);
+  const panelRef = useRef(null);
+
+  useEffect(() => {
+    if (!project) return;
+
+    gsap.set(overlayRef.current, { opacity: 0 });
+    gsap.set(panelRef.current, { opacity: 0, y: 18, scale: 0.98 });
+
+    gsap.to(overlayRef.current, { opacity: 1, duration: 0.2, ease: "power2.out" });
+    gsap.to(panelRef.current, {
+      opacity: 1,
+      y: 0,
+      scale: 1,
+      duration: 0.45,
+      ease: "power3.out",
+      delay: 0.05,
+    });
+  }, [project]);
+
   if (!project) return null;
+
+  const close = () => {
+    gsap.to(panelRef.current, {
+      opacity: 0,
+      y: 14,
+      scale: 0.985,
+      duration: 0.2,
+      ease: "power2.inOut",
+    });
+
+    gsap.to(overlayRef.current, {
+      opacity: 0,
+      duration: 0.2,
+      ease: "power2.inOut",
+      onComplete: onClose,
+    });
+  };
 
   return (
     <div
+      ref={overlayRef}
       className="fixed inset-0 z-9999 bg-black/70 backdrop-blur-sm grid place-items-center px-4"
-      onClick={onClose}
+      onClick={close}
     >
       <div
+        ref={panelRef}
         onClick={(e) => e.stopPropagation()}
         className="w-full max-w-2xl rounded-3xl bg-white/5 neon-border p-6 md:p-8 relative overflow-hidden"
       >
@@ -17,13 +58,12 @@ export default function ProjectModal({ project, onClose }) {
 
         <button
           className="absolute top-4 right-4 size-10 rounded-full bg-white/5 neon-border grid place-items-center hover:bg-white/10 transition"
-          onClick={onClose}
+          onClick={close}
         >
           <X size={18} />
         </button>
 
         <div className="relative">
-          {/* ✅ Image */}
           <img
             src={project.image}
             alt={project.title}

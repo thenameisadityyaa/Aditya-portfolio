@@ -1,10 +1,12 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { NavLink, useNavigate } from "react-router-dom";
-import { Command, Menu, X, ArrowRight } from "lucide-react";
+import { Command, Menu, X, ArrowRight, FileText } from "lucide-react";
+import gsap from "gsap";
 
 const links = [
   { name: "Home", path: "/" },
   { name: "Work", path: "/work" },
+  { name: "Catalog", path: "/catalog" },
   { name: "About", path: "/about" },
   { name: "Achievements", path: "/achievements" },
   { name: "Contact", path: "/contact" },
@@ -14,15 +16,53 @@ export default function Navbar() {
   const [open, setOpen] = useState(false);
   const navigate = useNavigate();
 
+  const overlayRef = useRef(null);
+
   const go = (path) => {
-    setOpen(false);
-    navigate(path);
+    closeMenu(() => navigate(path));
   };
 
-  // ✅ Lock background scroll when menu is open
+  const closeMenu = (afterClose) => {
+    const overlay = overlayRef.current;
+    if (!overlay) {
+      setOpen(false);
+      afterClose?.();
+      return;
+    }
+
+    gsap.to(".menu-item", { y: 10, opacity: 0, stagger: 0.04, duration: 0.2 });
+    gsap.to(overlay, {
+      opacity: 0,
+      duration: 0.22,
+      ease: "power2.out",
+      onComplete: () => {
+        setOpen(false);
+        afterClose?.();
+      },
+    });
+  };
+
   useEffect(() => {
     document.body.style.overflow = open ? "hidden" : "auto";
     return () => (document.body.style.overflow = "auto");
+  }, [open]);
+
+  useEffect(() => {
+    if (!open) return;
+
+    const overlay = overlayRef.current;
+    gsap.set(overlay, { opacity: 0 });
+    gsap.set(".menu-item", { y: 14, opacity: 0 });
+
+    gsap.to(overlay, { opacity: 1, duration: 0.22, ease: "power2.out" });
+    gsap.to(".menu-item", {
+      y: 0,
+      opacity: 1,
+      duration: 0.55,
+      stagger: 0.06,
+      ease: "power3.out",
+      delay: 0.1,
+    });
   }, [open]);
 
   return (
@@ -34,7 +74,7 @@ export default function Navbar() {
         </NavLink>
 
         {/* Desktop Links */}
-        <div className="hidden md:flex gap-6 text-sm">
+        <div className="hidden md:flex gap-6 text-sm items-center">
           {links.map((l) => (
             <NavLink
               key={l.path}
@@ -50,6 +90,15 @@ export default function Navbar() {
               {l.name}
             </NavLink>
           ))}
+
+          <a
+            href="/resume.pdf"
+            target="_blank"
+            rel="noreferrer"
+            className="text-(--muted) hover:text-white transition"
+          >
+            Resume
+          </a>
         </div>
 
         {/* Right controls */}
@@ -78,9 +127,15 @@ export default function Navbar() {
         </div>
       </nav>
 
+      {/* ✅ Fullscreen Mobile Menu */}
       {open && (
-        <div className="fixed inset-0 z-99999 bg-black">
-          {/* Top bar inside menu */}
+        <div
+          ref={overlayRef}
+          className="fixed inset-0 z-99999 bg-black"
+          role="dialog"
+          aria-modal="true"
+        >
+          {/* top bar */}
           <div className="border-b border-(--border) bg-black">
             <div className="max-w-6xl mx-auto px-4 py-4 flex items-center justify-between">
               <div className="text-lg font-semibold tracking-wide">
@@ -88,7 +143,7 @@ export default function Navbar() {
               </div>
 
               <button
-                onClick={() => setOpen(false)}
+                onClick={() => closeMenu()}
                 className="size-10 rounded-full bg-white/5 neon-border grid place-items-center hover:bg-white/10 transition"
                 aria-label="Close menu"
               >
@@ -97,15 +152,14 @@ export default function Navbar() {
             </div>
           </div>
 
-          {/* Menu Content */}
+          {/* content */}
           <div className="max-w-6xl mx-auto px-4 py-10">
-            {/* big nav links */}
             <div className="space-y-3">
               {links.map((l) => (
                 <button
                   key={l.path}
                   onClick={() => go(l.path)}
-                  className="w-full rounded-3xl bg-black neon-border px-6 py-5 hover:bg-white/10 transition text-left flex items-center justify-between"
+                  className="menu-item w-full rounded-3xl bg-black neon-border px-6 py-5 hover:bg-white/10 transition text-left flex items-center justify-between"
                 >
                   <div>
                     <p className="text-2xl font-semibold text-white">{l.name}</p>
@@ -116,13 +170,23 @@ export default function Navbar() {
                   <ArrowRight className="text-(--accent)" size={22} />
                 </button>
               ))}
+
+              {/* Resume */}
+              <button
+                onClick={() => closeMenu(() => window.open("/resume.pdf", "_blank"))}
+                className="menu-item w-full rounded-3xl bg-black neon-border px-6 py-5 hover:bg-white/10 transition text-left flex items-center justify-between"
+              >
+                <div>
+                  <p className="text-2xl font-semibold text-white">Resume</p>
+                  <p className="mt-1 text-(--muted) text-sm">View / Download PDF</p>
+                </div>
+                <FileText className="text-(--accent)" size={22} />
+              </button>
             </div>
 
-            {/* Quick actions */}
-            <div className="mt-8 rounded-3xl bg-black neon-border p-6 relative overflow-hidden">
-              {/* ✅ Glow */}
+            {/* quick actions */}
+            <div className="menu-item mt-8 rounded-3xl bg-black neon-border p-6 relative overflow-hidden">
               <div className="absolute -top-20 -right-24 size-72 rounded-full bg-(--accent) opacity-20 blur-3xl" />
-              {/* ✅ BLACK MASK (prevents text behind being visible) */}
               <div className="absolute inset-0 bg-black/90" />
 
               <div className="relative">
@@ -151,13 +215,12 @@ export default function Navbar() {
 
                 <p className="mt-4 text-xs text-white/35">
                   Tip: Press{" "}
-                  <span className="text-white/60">Ctrl + K</span> for command
-                  palette.
+                  <span className="text-white/60">Ctrl + K</span> for command palette.
                 </p>
               </div>
             </div>
 
-            <p className="mt-10 text-xs text-white/25">
+            <p className="menu-item mt-10 text-xs text-white/25">
               © {new Date().getFullYear()} Aditya Sharma
             </p>
           </div>
